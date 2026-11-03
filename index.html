@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Viver Inteira</title>
+<meta name="theme-color" content="#6E2A35">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Viver Inteira">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Nunito:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<!--CORPO-->
+<section class="wrap" id="login" hidden>
+  <div class="hd"><div><small>Fé, corpo e rotina</small><h1>Viver Inteira</h1></div></div>
+  <section class="card">
+    <div class="subtabs"><button type="button" id="tCriar" aria-pressed="true">Primeira vez</button><button type="button" id="tEntrar" aria-pressed="false">Já tenho conta</button></div>
+    <p class="hint">Use o mesmo e-mail da sua compra na Hotmart.</p>
+    <form id="fLogin" style="display:flex;flex-direction:column;gap:10px">
+      <label class="hint" for="email"><b>E-mail</b></label><input type="email" id="email" autocomplete="email" required>
+      <label class="hint" for="senha"><b>Senha (mínimo 6 letras ou números)</b></label><input type="password" id="senha" minlength="6" required>
+      <button class="btn" id="bEntrar">Criar a minha conta</button>
+      <button class="link" type="button" id="bEsqueci" hidden>Esqueci a senha</button>
+      <p class="msg" id="loginMsg" aria-live="polite"></p>
+      <p class="hint">Ao entrar você concorda com o <a href="privacidade.html">aviso de privacidade</a>.</p>
+    </form>
+  </section>
+</section>
+<main class="wrap" id="wrap" hidden><div id="main" style="display:flex;flex-direction:column;gap:12px"></div></main>
+<div class="tabbar" id="tabbar" hidden><nav>
+  <a href="#hoje"><b>☀️</b>Hoje</a><a href="#fe"><b>🙏</b>Fé</a><a href="#corpo"><b>💪</b>Corpo</a><a href="#casa"><b>🏡</b>Casa</a><a href="#mais"><b>☰</b>Mais</a>
+</nav></div>
+<div class="sheet" id="sheet" hidden></div>
+<div class="toast" id="toast" hidden></div>
+<!--/CORPO-->
+<script src="supabase.js"></script>
+<script src="config.js"></script>
+<script src="conteudo.js"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>
