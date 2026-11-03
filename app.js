@@ -196,10 +196,9 @@
 
   R.mais = function(){
     var b = function(v, em, t, s){ return '<button data-a="go" data-v="'+v+'"><span class="em">'+em+'</span><b>'+t+'</b><span>'+s+'</span></button>'; };
-    return head('Tudo do seu planner', 'Mais', '☰')
-      + '<div class="menu">'+b('financas','💰','Finanças','Orçamento, contas e metas')+b('desafios','✨','Desafios','Jornadas guiadas')
-      + b('metas','🎯','Metas do ano','Com Deus, comigo e com quem eu amo')+b('meudia','✏️','Meu dia','O que acompanhar')
-      + b('ajustes','⚙️','Ajustes','Nome, água, conta')+b('instalar','📲','Instalar','Na tela de início')+'</div>';
+    return head('Configurações', 'Mais', '☰')
+      + '<div class="menu">'+b('ajustes','⚙️','Ajustes','Nome, água, conta')+b('meudia','✏️','Meu dia','O que acompanhar')
+      + b('instalar','📲','Instalar','Na tela de início')+'</div>';
   };
 
   R.financas = function(){
@@ -308,7 +307,7 @@
 
   // ---------- desenhar ----------
   var TABS = [['hoje','☀️','Hoje'],['fe','🙏','Fé'],['corpo','💪','Corpo'],['casa','🏡','Casa'],['mais','☰','Mais']];
-  var MAIS = ['mais','financas','desafios','metas','meudia','ajustes','instalar'];
+  var MAIS = ['mais','meudia','ajustes','instalar'];
   function render(){
     var t = view.tela, html;
     if (!st.onboard) html = view.ob === 1 ? R.boasvindas() : view.ob === 2 ? R.meudia() : R.instalar();
@@ -322,9 +321,12 @@
       if (v === t || (v === 'mais' && MAIS.indexOf(t) >= 0)) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
     });
     window.scrollTo(0, same ? sy : 0);
+    var cur = document.querySelector('#tabbar a[aria-current]'), nav = document.querySelector('#tabbar nav');
+    if (cur && !same) { var l = cur.offsetLeft, w = cur.offsetWidth; if (l < nav.scrollLeft || l + w > nav.scrollLeft + nav.clientWidth) nav.scrollTo({left: l - nav.clientWidth + w*2, behavior:'smooth'}); }
     render.last = t + view.ob + view.casaTab + view.desafio;
   }
   function go(v){ if (location.hash !== '#'+v) location.hash = v; else { view.tela = v; render(); } }
+  document.querySelector('#tabbar nav').addEventListener('scroll', function(){ this.classList.toggle('fim', this.scrollLeft + this.clientWidth >= this.scrollWidth - 4); });
   window.addEventListener('hashchange', function(){ view.tela = location.hash.slice(1) || 'hoje'; if (view.tela !== 'desafios') view.desafio = null; render(); });
 
   // ---------- folha (modal) ----------
