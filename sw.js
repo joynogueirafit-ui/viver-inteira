@@ -1,6 +1,6 @@
 // Guarda o app para abrir mesmo sem internet. Os dados vêm do Supabase quando há conexão.
-var CACHE = 'vi-v1';
-var FILES = ['./', 'index.html', 'style.css', 'app.js', 'conteudo.js', 'config.js', 'supabase.js', 'manifest.webmanifest', 'icon-192.png'];
+var CACHE = 'vi-v2';
+var FILES = ['./', 'index.html', 'style.css', 'app.js', 'conteudo.js', 'evangelhos.js', 'config.js', 'supabase.js', 'manifest.webmanifest', 'icon-192.png'];
 self.addEventListener('install', function(e){ e.waitUntil(caches.open(CACHE).then(function(c){ return c.addAll(FILES); })); self.skipWaiting(); });
 self.addEventListener('activate', function(e){ e.waitUntil(caches.keys().then(function(ks){ return Promise.all(ks.filter(function(k){ return k !== CACHE; }).map(function(k){ return caches.delete(k); })); })); self.clients.claim(); });
 self.addEventListener('fetch', function(e){

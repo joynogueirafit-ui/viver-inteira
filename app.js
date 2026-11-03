@@ -126,10 +126,18 @@
     var datas = st.intencoes.map(function(t,i){ return '<span class="tag">'+esc(t)+' <button class="x" data-a="delInt" data-v="'+i+'" aria-label="Remover">×</button></span>'; }).join('');
     return head('Minha vida com Deus', 'Vida de fé', '🙏')
       + '<section class="card"><div class="streak"><b>🔥 '+n+'</b><div><b style="font-size:14px;color:var(--fg)">'+(n===1?'dia':'dias')+' seguidos com Deus</b><p class="hint">'+(n?'Continue, você está indo bem!':'Hoje é um ótimo dia para começar.')+'</p></div></div></section>'
-      + '<section class="card gosp"><h2>📖 Evangelho do dia <em>'+WD[T.getDay()]+', '+pad(T.getDate())+'/'+pad(T.getMonth()+1)+'</em></h2>'
-      + '<div class="tags"><a class="tag" href="'+LIT_URL+'" target="_blank" rel="noopener">Ler o Evangelho de hoje ↗</a></div>'
-      + chk(d.f.evangLido, 'evang', 'evangLido', 'Li o Evangelho de hoje')
-      + '<label class="hint" for="evRefl">✍️ O que Deus me falou hoje</label><textarea id="evRefl" data-f="evRefl" placeholder="Uma palavra, um versículo, um propósito…">'+esc(d.evRefl)+'</textarea></section>'
+      + (function(){
+          var ev = (window.EVANGELHOS || {})[TK], h = '<section class="card gosp"><h2>📖 Evangelho do dia <em>'+(ev ? ev.ref : pad(T.getDate())+'/'+pad(T.getMonth()+1))+'</em></h2>';
+          if (ev) {
+            var longo = ev.txt.length > 320, aberto = view.evAberto || !longo;
+            h += '<p class="hint" style="margin:0"><b>Evangelho de Jesus Cristo segundo '+ev.livro+'</b></p>'
+              + '<p class="evtxt">'+esc(aberto ? ev.txt : ev.txt.slice(0, ev.txt.lastIndexOf(' ', 300)) + '…')+'</p>'
+              + (longo ? '<button class="link" data-a="evAbrir">'+(aberto ? 'Mostrar menos' : 'Ler completo')+'</button>' : '')
+              + '<p class="hint" style="font-size:11px">Palavra da Salvação. · Tradução Bíblia Livre (BLIVRE)</p>';
+          } else h += '<div class="tags"><a class="tag" href="'+LIT_URL+'" target="_blank" rel="noopener">Ler o Evangelho de hoje ↗</a></div>';
+          return h + chk(d.f.evangLido, 'evang', 'evangLido', 'Li o Evangelho de hoje')
+            + '<label class="hint" for="evRefl">✍️ O que Deus me falou hoje</label><textarea id="evRefl" data-f="evRefl" placeholder="Uma palavra, um versículo, um propósito…">'+esc(d.evRefl)+'</textarea></section>';
+        })()
       + '<section class="card"><h2>Terço de hoje <em>Mistérios '+mist+'</em></h2><div class="terco">'+beads+'</div>'
       + '<p class="hint">'+(c>=55?'Terço completo! 🌹':(mi+1)+'º mistério · '+Math.max(0,pos-1)+' de 10 Ave-Marias')+(c?' · <button class="link" data-a="tercoZero">recomeçar</button>':'')+'</p></section>'
       + '<section class="card"><h2>Minha semana com Deus <em>'+st.semDeus.filter(function(x){return s.f[x.id];}).length+' de '+st.semDeus.length+'</em></h2>'
@@ -366,6 +374,7 @@
     delData: function(el){ st.casa.datas = st.casa.datas.filter(function(c){ return c.id !== el.dataset.id; }); },
     pagar: function(el){ mes().contas.forEach(function(c){ if (c.id === el.dataset.id) c.pago = !c.pago; }); },
     delConta: function(el){ var m = mes(); m.contas = m.contas.filter(function(c){ return c.id !== el.dataset.id; }); },
+    evAbrir: function(){ view.evAberto = !view.evAberto; },
     abrirDesafio: function(el){ view.desafio = el.dataset.id; },
     voltarDesafios: function(){ view.desafio = null; },
     comecar: function(el){ st.desafios[el.dataset.id] = {inicio:TK, f:{}}; toast('Desafio começado! 🤍'); },
