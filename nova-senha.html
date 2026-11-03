@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nova senha · 50 dias até o Natal</title><link rel="stylesheet" href="style.css?v=4"></head>
+<title>Nova senha · Viver Inteira</title><link rel="stylesheet" href="style.css?v=1"></head>
 <body><div class="wrap"><section class="card">
 <h2>Criar uma senha nova</h2>
 <form id="f" class="col">
@@ -10,7 +10,7 @@
 <script src="supabase.js?v=4"></script>
 <script src="config.js?v=4"></script>
 <script>
-var c = window.PLANNER_CONFIG, sb = window.supabase.createClient(c.url, c.anonKey);
+var c = window.VI_CONFIG, sb = window.supabase.createClient(c.url, c.anonKey);
 document.getElementById('f').addEventListener('submit', function(e){
   e.preventDefault(); var m = document.getElementById('m'); m.textContent = 'Salvando…';
   sb.auth.updateUser({password: document.getElementById('s').value}).then(function(r){
