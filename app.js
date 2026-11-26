@@ -42,7 +42,7 @@
 
   // ---------- estado ----------
   function blank(){
-    return {v:1, nome:'', onboard:false, itens:[], semDeus:clone(C.semanaDeus), aguaMeta:8,
+    return {v:1, nome:'', tom:'', onboard:false, itens:[], semDeus:clone(C.semanaDeus), aguaMeta:8,
       dias:{}, semanas:{}, intencoes:[], treinos:clone(C.treinos), pesos:[],
       casa:{limpeza:clone(C.limpeza), familia:[], cardapio:{}, compras:[], datas:[]},
       fin:{meses:{}, orc:{'Mercado':1400,'Casa e contas':2200,'Lazer':400}, metas:[]},
@@ -109,7 +109,7 @@
     var m = !feitos ? '' : feitos === its.length ? msgs[3] : msgs[Math.min(2, Math.floor(feitos/its.length*3))];
     var h = new Date().getHours(), oi = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
     var drops = ''; for (var i=0;i<st.aguaMeta;i++) drops += '<button class="drop'+(i<(d.agua||0)?' on':'')+'" data-a="agua" data-v="'+(i+1)+'" aria-label="'+(i+1)+' copos"></button>';
-    return head(WD[T.getDay()]+', '+T.getDate()+' de '+MES[T.getMonth()], oi+(st.nome?', '+esc(st.nome):'')+' 🤍', esc((st.nome||'V')[0].toUpperCase()))
+    return head(WD[T.getDay()]+', '+T.getDate()+' de '+MES[T.getMonth()], oi+(st.nome?', <span class="cur">'+esc(st.nome)+'</span>':''), esc((st.nome||'V')[0].toUpperCase()))
       + '<div class="verse"><span class="pill">'+lit+'</span><i>“'+fr[0]+'”</i><small>'+fr[1]+'</small></div>'
       + '<section class="card"><h2>Meu dia <em>'+feitos+' de '+its.length+'</em></h2>'
       + (its.length ? its.map(function(i){ return chk(d.f[i.id], 'item', i.id, i.nome, {em:i.em}); }).join('') : '<p class="hint">Nada marcado para hoje.</p>')
@@ -258,9 +258,9 @@
     var dIdx = Math.min(i.idx, x.dias-1), passo;
     if (x.passos) passo = x.passos[dIdx];
     else { var sw = Math.min(x.temas.length-1, Math.floor(dIdx / Math.ceil(x.dias / x.temas.length))); passo = 'Tema da semana: ' + x.temas[sw]; }
-    h += '<section class="card"><h2>Dia '+(dIdx+1)+' de '+x.dias+' <em>'+i.feitos+' feitos</em></h2><p style="margin:0;font-family:var(--display);font-size:18px;color:var(--wine)">'+esc(passo)+'</p>'
+    h += '<section class="card"><h2>Dia '+(dIdx+1)+' de '+x.dias+' <em>'+i.feitos+' feitos</em></h2><p style="margin:0;font-family:var(--read);font-size:18px;color:var(--azul)">'+esc(passo)+'</p>'
       + (i.ativo ? chk(f[dIdx], 'desafioDia', dIdx, 'Fiz o desafio de hoje') : '<p class="msg">Desafio concluído! 🤍</p>') + '</section>';
-    var mapa = ''; for (var k=0;k<x.dias;k++) mapa += '<span class="tag'+(f[k]?'':' soft')+'" style="min-width:34px;text-align:center'+(k===dIdx?';outline:2px solid var(--wine2)':'')+'">'+(k+1)+'</span>';
+    var mapa = ''; for (var k=0;k<x.dias;k++) mapa += '<span class="tag'+(f[k]?'':' soft')+'" style="min-width:34px;text-align:center'+(k===dIdx?';outline:2px solid var(--azul2)':'')+'">'+(k+1)+'</span>';
     return h + '<section class="card"><h2>Meu caminho</h2><div class="tags">'+mapa+'</div></section>';
   };
 
@@ -292,10 +292,11 @@
   R.ajustes = function(){
     return head('Ajustes', 'Meu planner', '⚙️')
       + '<section class="card"><label class="hint" for="aNome"><b>Como posso te chamar?</b></label><input type="text" id="aNome" data-f="nome" value="'+esc(st.nome)+'">'
+      + '<p class="hint"><b>Cor das mãos nos ícones</b></p>' + tonsPicker()
       + '<label class="hint" for="aAgua"><b>Meta de água (copos por dia)</b></label><input type="number" id="aAgua" min="1" max="16" data-f="aguaMeta" value="'+st.aguaMeta+'"></section>'
       + '<section class="card"><h2>Minha conta</h2><p class="hint">'+(user ? esc(user.email) : 'Modo de teste: as marcações ficam só neste aparelho.')+'</p>'
       + (user ? '<button class="btn ghost" data-a="sair">Sair da conta</button>' : '')
-      + '<button class="link" data-a="apagar" style="color:#B5463F">Apagar todos os meus dados</button></section>';
+      + '<button class="link" data-a="apagar" style="color:var(--danger)">Apagar todos os meus dados</button></section>';
   };
 
   R.instalar = function(){
@@ -306,12 +307,21 @@
   };
 
   R.boasvindas = function(){
-    return '<div class="hd"><div><small>Passo 1 de 3</small><h1>Bem-vinda ao Viver Inteira</h1></div></div>'
+    return '<div class="hd"><div><small>Passo 1 de 3</small><h1>Bem-vinda ao <span class="cur">Viver Inteira</span></h1></div></div>'
       + '<div class="verse"><i>“Não sabeis que o vosso corpo é templo do Espírito Santo?”</i><small>1 Coríntios 6,19</small></div>'
       + '<section class="card"><p style="margin:0">Aqui você cuida da alma, do corpo e da sua rotina, um dia de cada vez. Vamos montar o seu planner em 1 minuto.</p>'
-      + '<label class="hint" for="obNome"><b>Como posso te chamar?</b></label><input type="text" id="obNome" data-f="nome" value="'+esc(st.nome)+'" placeholder="Seu nome"></section>'
+      + '<label class="hint" for="obNome"><b>Como posso te chamar?</b></label><input type="text" id="obNome" data-f="nome" value="'+esc(st.nome)+'" placeholder="Seu nome">'
+      + '<p class="hint"><b>Escolha a cor das mãos nos ícones</b></p>' + tonsPicker() + '</section>'
       + '<button class="btn" data-a="obNext">Continuar</button>';
   };
+
+  // ---------- cor das mãos (tom de pele dos emojis) ----------
+  var TONS = ['', '\uD83C\uDFFB', '\uD83C\uDFFC', '\uD83C\uDFFD', '\uD83C\uDFFE', '\uD83C\uDFFF'];
+  function pele(h){
+    var t = st.tom || ''; if (!t) return h;
+    return h.replace(/🙏/g, '🙏'+t).replace(/💪/g, '💪'+t).replace(/🚶\u200D♀️/g, '🚶'+t+'\u200D♀️').replace(/🛁/g, '🛀'+t);
+  }
+  function tonsPicker(){ return '<div class="tons" role="group" aria-label="Cor das mãos">'+TONS.map(function(t,i){ return '<button type="button" data-a="tom" data-v="'+i+'" aria-pressed="'+((st.tom||'')===t)+'" aria-label="Tom '+(i+1)+'">&#x1F64F;'+t+'</button>'; }).join('')+'</div>'; }
 
   // ---------- desenhar ----------
   var TABS = [['hoje','☀️','Hoje'],['fe','🙏','Fé'],['corpo','💪','Corpo'],['casa','🏡','Casa'],['mais','☰','Mais']];
@@ -322,7 +332,9 @@
     else html = (R[t] || R.hoje)();
     if (demo) html = '<div class="demo">Versão de teste · as marcações ficam só neste aparelho</div>' + html;
     var sy = window.scrollY, same = render.last === t + view.ob + view.casaTab + view.desafio;
-    $('main').innerHTML = html;
+    $('main').innerHTML = pele(html);
+    $('main').classList.toggle('grade', st.onboard && ['hoje','fe','corpo','casa','financas'].indexOf(t) >= 0);
+    if (!render.tab) render.tab = $('tabbar').innerHTML; $('tabbar').innerHTML = pele(render.tab);
     $('tabbar').hidden = !st.onboard;
     document.querySelectorAll('#tabbar a').forEach(function(a){
       var v = a.getAttribute('href').slice(1);
@@ -356,6 +368,7 @@
   // ---------- ações ----------
   var A = {
     go: function(el){ go(el.dataset.v); },
+    tom: function(el){ st.tom = TONS[+el.dataset.v]; },
     item: function(el){ var d = dia(); d.f[el.dataset.id] = !d.f[el.dataset.id]; },
     evang: function(){ var d = dia(); d.f.evangLido = !d.f.evangLido; if (st.itens.some(function(i){return i.id==='evang';})) d.f.evang = d.f.evangLido; },
     agua: function(el){ var d = dia(), v = +el.dataset.v; d.agua = d.agua === v ? v-1 : v; },
@@ -402,7 +415,7 @@
         + '<div class="row"><input type="text" id="iEm" value="'+esc(cur.em)+'" aria-label="Emoji" style="max-width:60px;text-align:center"><input type="text" id="iNome" value="'+esc(cur.nome)+'" placeholder="Ex.: Tomar vitamina" aria-label="Nome"></div>'
         + '<label class="hint" for="iArea"><b>Área</b></label><select id="iArea">'+['Com Deus','Corpo','Comigo'].map(function(a){ return '<option'+(a===cur.area?' selected':'')+'>'+a+'</option>'; }).join('')+'</select>'
         + '<p class="hint"><b>Em quais dias aparece?</b></p>'+wdPicker(cur.dias)
-        + (st.itens.some(function(x){return x.id===id;}) ? '<button class="link" data-s-del style="color:#B5463F">Tirar do meu dia</button>' : ''),
+        + (st.itens.some(function(x){return x.id===id;}) ? '<button class="link" data-s-del style="color:var(--danger)">Tirar do meu dia</button>' : ''),
       function(s){
         var nome = s.querySelector('#iNome').value.trim(), dias = wdRead(s);
         if (!nome || !dias.length) { toast(!nome ? 'Escreva o nome do item' : 'Escolha pelo menos um dia'); return false; }
