@@ -22,7 +22,12 @@ Deno.serve(async (req) => {
 
   const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
   if (LIBERA.includes(evento)) {
-    const validade = new Date(Date.now() + 365 * 864e5).toISOString().slice(0, 10);
+    // Com o Recuperador automático (parcelas cobradas mês a mês) chega um aviso por parcela.
+    // Só abre mais 1 ano quando não há acesso ativo com mais de 30 dias pela frente (compra nova ou renovação).
+    const { data: atual } = await sb.from("compradoras").select("status, validade").eq("email", email).maybeSingle();
+    const limite = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10);
+    const jaTem = atual?.status === "ativa" && atual?.validade && atual.validade > limite;
+    const validade = jaTem ? atual!.validade : new Date(Date.now() + 365 * 864e5).toISOString().slice(0, 10);
     await sb.from("compradoras").upsert({ email, status: "ativa", validade, transacao, atualizado: new Date().toISOString() });
   } else if (BLOQUEIA[evento]) {
     await sb.from("compradoras").update({ status: BLOQUEIA[evento], atualizado: new Date().toISOString() }).eq("email", email);
