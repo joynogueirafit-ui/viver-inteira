@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viver Inteira · App planner da mulher católica</title>
+<meta name="description" content="O app planner da mulher católica: Evangelho do dia, novenas, rotina, treino, casa, finanças e metas em um só lugar. Por Joy Nogueira.">
+<meta property="og:title" content="Viver Inteira · App planner da mulher católica">
+<meta property="og:description" content="Fé, rotina e corpo em um só lugar.">
+<meta property="og:image" content="https://joynogueirafit-ui.github.io/viver-inteira/venda/capa.jpg">
+<meta name="theme-color" content="#13307F">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@500;600;800&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#13307F;--azul2:#2C4DA0;--ceu:#A9C6EA;--creme:#FCF6EC;--gold:#C9A35E;--fg:#26304A;--mut:#5d6684}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--creme);color:var(--fg);font-family:Lora,Georgia,serif;font-size:18px;line-height:1.6}
+img{max-width:100%;display:block}
+.w{max-width:1080px;margin:0 auto;padding:0 20px}
+h1,h2,h3,.k,.btn,.mont{font-family:Montserrat,system-ui,sans-serif}
+h2{color:var(--azul);font-weight:800;font-size:clamp(28px,4.5vw,42px);line-height:1.15;margin:0 0 16px}
+h3{color:var(--azul);font-weight:800;font-size:24px;margin:0 0 8px}
+.k{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px}
+.it{font-style:italic;color:var(--gold)}
+.btn{display:inline-block;background:var(--gold);color:var(--azul);font-weight:800;letter-spacing:.06em;text-decoration:none;padding:18px 34px;border-radius:50px;font-size:17px;box-shadow:0 10px 24px rgba(201,163,94,.35);text-align:center}
+.btn:hover{filter:brightness(1.05)}
+section{padding:72px 0}
+.azul{background:radial-gradient(circle at 75% 70%,var(--azul2) 0,var(--azul) 60%,#0d2366 100%);color:var(--creme)}
+.azul h2,.azul h3{color:var(--creme)}
+.azul .it{color:var(--ceu)}
+
+/* topo */
+.hero{padding:48px 0 64px}
+.hero .w{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.cz{width:9px;height:58px;background:var(--gold);position:relative;margin:0 0 14px 44px}.cz:after{content:"";position:absolute;left:-20px;top:14px;width:49px;height:9px;background:var(--gold)}
+.logo .v{font-family:'Great Vibes',cursive;font-size:clamp(96px,14vw,140px);line-height:.85}
+.logo .n{font-family:Montserrat;font-weight:800;color:var(--ceu);font-size:clamp(30px,4.4vw,44px);letter-spacing:.22em}
+.hero p.sub{font-size:22px;font-style:italic;margin:24px 0 28px;max-width:520px}
+.hero .tag{font-family:Montserrat;font-size:14px;color:var(--ceu);margin-top:16px}
+.hero img{border-radius:28px;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+
+/* dor */
+.dor{max-width:760px;margin:0 auto;text-align:center}
+.dor p{font-size:20px}
+.dor .lista{display:grid;gap:12px;text-align:left;margin:28px auto;max-width:620px}
+.dor .lista div{background:#fff;border-radius:16px;padding:14px 18px 14px 50px;position:relative;font-size:18px}
+.dor .lista div:before{content:"";position:absolute;left:20px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--ceu)}
+
+/* areas */
+.area{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center;margin:0 auto 64px;max-width:900px}
+.area:nth-child(even){grid-template-columns:1fr 300px}
+.area:nth-child(even) .ph{order:2}
+.ph{background:#0b1636;padding:10px;border-radius:44px;box-shadow:0 24px 48px rgba(19,48,127,.25);max-width:300px;margin:0 auto}
+.ph img{border-radius:35px;aspect-ratio:390/700;object-fit:cover;object-position:top;width:100%}
+.area p{margin:0 0 8px}
+.duo{display:flex;gap:16px}.duo .ph{max-width:230px}
+
+.pc img{border-radius:18px;box-shadow:0 30px 60px rgba(0,0,0,.3);border:10px solid #0b1636}
+
+/* quem */
+.quem{display:grid;grid-template-columns:220px 1fr;gap:40px;align-items:center;max-width:900px;margin:0 auto}
+.foto{width:220px;height:220px;border-radius:50%;background:linear-gradient(160deg,var(--azul),var(--azul2));display:flex;align-items:center;justify-content:center;color:var(--creme);font-family:'Great Vibes';font-size:96px;overflow:hidden;border:6px solid #fff;box-shadow:0 14px 30px rgba(19,48,127,.2)}
+.foto img{width:100%;height:100%;object-fit:cover}
+
+/* oferta */
+.of{max-width:640px;margin:0 auto;text-align:center}
+.preco{font-family:Montserrat;font-weight:800;font-size:clamp(72px,14vw,120px);line-height:1;margin:6px 0}
+.preco small{font-size:.4em}
+.de{font-family:Montserrat;text-decoration:line-through;opacity:.75;font-size:20px}
+.box{background:rgba(252,246,236,.08);border:2px solid var(--gold);border-radius:24px;padding:24px 28px;text-align:left;margin:28px 0}
+.box div{font-family:Montserrat;font-weight:600;font-size:17px;margin:10px 0;display:flex;gap:12px}
+.box div:before{content:"✓";color:var(--gold);font-weight:800}
+.nota{font-size:15px;color:var(--ceu);margin-top:16px}
+.grupo{margin-top:18px;font-size:16px;background:rgba(169,198,234,.12);border-radius:14px;padding:12px 16px}
+
+.gar{display:flex;gap:24px;align-items:center;max-width:760px;margin:0 auto}
+.selo{flex:none;width:120px;height:120px;border-radius:50%;border:4px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Montserrat;font-weight:800;color:var(--azul);line-height:1}
+.selo b{font-size:44px}.selo span{font-size:12px;letter-spacing:.1em}
+
+/* faq */
+.faq{max-width:760px;margin:0 auto}
+details{background:#fff;border-radius:16px;padding:18px 22px;margin:12px 0}
+summary{font-family:Montserrat;font-weight:600;color:var(--azul);cursor:pointer;font-size:17px}
+details p{margin:12px 0 0}
+footer{padding:36px 0;text-align:center;font-family:Montserrat;font-size:13px;color:var(--mut)}
+footer a{color:var(--azul)}
+.fix{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(252,246,236,.96);box-shadow:0 -6px 20px rgba(0,0,0,.08);display:none;text-align:center;z-index:5}
+.fix .btn{padding:14px 20px;font-size:15px;width:100%;max-width:420px}
+
+@media (max-width:760px){
+  section{padding:56px 0}
+  .hero .w,.area,.area:nth-child(even),.quem{grid-template-columns:1fr;gap:28px}
+  .area:nth-child(even) .ph{order:0}
+  .hero{text-align:center}.cz{margin:0 auto 14px}.hero p.sub{margin-left:auto;margin-right:auto}
+  .quem{text-align:center}.foto{margin:0 auto}
+  .gar{flex-direction:column;text-align:center}
+  .fix{display:block}body{padding-bottom:80px}
+  .duo .ph{max-width:48%}
+}
+</style>
+</head>
+<body>
+
+<section class="azul hero">
+  <div class="w">
+    <div>
+      <div class="logo"><div class="cz"></div><div class="v">Viver</div><div class="n">INTEIRA</div></div>
+      <p class="sub">O app planner da mulher católica: fé, rotina e corpo em um só lugar.</p>
+      <a class="btn js-cta" href="#oferta">QUERO O VIVER INTEIRA</a>
+      <div class="tag">Funciona no celular e no computador · Acesso por 1 ano</div>
+    </div>
+    <img src="venda/hero.png" alt="Telas do app Viver Inteira" width="675" height="735" style="box-shadow:none;border-radius:0;width:100%;max-width:520px;height:auto;margin:0 auto">
+  </div>
+</section>
+
+<section>
+  <div class="w dor">
+    <div class="k">Talvez você se veja aqui</div>
+    <h2>Você quer colocar Deus no centro, cuidar do corpo e dar conta da casa…</h2>
+    <p>…mas a oração fica para depois, o treino fica para segunda, e a sua rotina mora espalhada entre o caderno, o bloco de notas, cinco aplicativos e a sua cabeça.</p>
+    <div class="lista">
+      <div>Você esquece de começar a novena e só lembra no último dia.</div>
+      <div>Quer ler o Evangelho do dia, mas precisa abrir três sites para achar.</div>
+      <div>Recomeça a rotina toda segunda e se perde na quarta.</div>
+      <div>Chega cansada do trabalho e não sabe o que vai ter no jantar.</div>
+    </div>
+    <p class="it">O Viver Inteira junta tudo isso num lugar só, com calma e sem perfeccionismo.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w">
+    <div style="text-align:center;margin-bottom:48px"><div class="k">O que tem dentro</div><h2>Uma vida inteira, organizada com amor</h2></div>
+
+    <div class="area"><div class="ph"><img src="venda/fe.jpg" alt="Tela Vida de fé" loading="lazy"></div>
+      <div><div class="k">Vida de fé</div><h3>O Evangelho do dia, dentro do app</h3>
+      <p>Abra e leia o Evangelho do dia completo, sem sair do app. Terço com o mistério do dia, sua sequência de dias com Deus e um espaço para escrever o que Ele falou com você.</p>
+      <p class="it">Para a fé voltar a ser o centro da rotina.</p></div></div>
+
+    <div class="area"><div class="ph"><img src="venda/novenas.jpg" alt="Tela Novenas" loading="lazy"></div>
+      <div><div class="k">Novenas</div><h3>A novena aparece no dia certo</h3>
+      <p>Oração e meditação para cada um dos 9 dias: Nossa Senhora de Fátima, Santa Rita de Cássia, Novena das Rosas, Nossa Senhora Aparecida, Nossa Senhora das Graças e outras que vão chegando.</p>
+      <p class="it">Você nunca mais esquece de começar.</p></div></div>
+
+    <div class="area"><div class="ph"><img src="venda/hoje.jpg" alt="Tela Meu dia" loading="lazy"></div>
+      <div><div class="k">Meu dia</div><h3>Seu dia num só olhar</h3>
+      <p>Escolha os hábitos que importam para você e em quais dias eles aparecem: oração, treino, sono, leitura. Marque a água, registre como você está e guarde uma frase do dia.</p>
+      <p class="it">Cada uma monta do seu jeito.</p></div></div>
+
+    <div class="area"><div class="ph"><img src="venda/corpo.jpg" alt="Tela Corpo" loading="lazy"></div>
+      <div><div class="k">Corpo e treino</div><h3>Cuidar do templo</h3>
+      <p>Treino sugerido para fazer em casa, que você pode trocar. Registro de peso sem neura e a sua evolução semana a semana.</p>
+      <p class="it">Cuidar do corpo também é oração.</p></div></div>
+
+    <div class="area"><div class="ph"><img src="venda/casa.jpg" alt="Tela Casa" loading="lazy"></div>
+      <div><div class="k">Casa e família</div><h3>Meu lar</h3>
+      <p>Limpeza de cada dia, tarefas divididas com a família, cardápio da semana, lista de compras e as datas importantes.</p>
+      <p class="it">Para a casa fluir sem você carregar tudo na cabeça.</p></div></div>
+
+    <div class="area"><div class="ph"><img src="venda/financas.jpg" alt="Tela Finanças" loading="lazy"></div>
+      <div><div class="k">Finanças</div><h3>Meu dinheiro</h3>
+      <p>Entradas e gastos do mês, limite por área, contas a pagar e metas de economia. Simples, sem planilha.</p>
+      <p class="it">Cuidar bem do que Deus confiou a você.</p></div></div>
+
+    <div class="area"><div class="duo"><div class="ph"><img src="venda/desafios.jpg" alt="Tela Desafios" loading="lazy"></div><div class="ph"><img src="venda/metas.jpg" alt="Tela Metas" loading="lazy"></div></div>
+      <div><div class="k">Desafios e metas</div><h3>Pequenos passos, todos os dias</h3>
+      <p>Jornadas guiadas com um passo por dia: 50 dias até o Natal, 21 dias de rotina saudável, Quaresma e Mês de Maria. E as suas metas do ano por área da vida, com revisão no fim do mês.</p></div></div>
+  </div>
+</section>
+
+<section class="azul">
+  <div class="w" style="display:grid;gap:36px;text-align:center">
+    <div><div class="k">Onde você estiver</div><h2>No celular e no computador</h2>
+    <p style="max-width:680px;margin:0 auto">Você instala na tela do celular como um aplicativo, sem ocupar espaço, e entra também pelo computador. Tudo fica salvo na sua conta. Sem Notion, sem planilha, sem complicação.</p></div>
+    <div class="pc" style="max-width:860px;margin:0 auto"><img src="venda/desk.jpg" alt="Viver Inteira no computador" loading="lazy"></div>
+  </div>
+</section>
+
+<section>
+  <div class="w quem">
+    <div class="foto" id="foto">Joy</div>
+    <div><div class="k">Quem fez o Viver Inteira</div><h2>Oi, eu sou a Joy</h2>
+    <p>Sou católica, em conversão todos os dias. Trabalho fora, acordo cedinho, treino em casa e já são -12 kg e contando, sem neura.</p>
+    <p>Eu precisava de um lugar para cuidar da fé, do corpo e da casa sem me perder. Primeiro veio o app grátis dos 50 dias até o Natal, e vocês me pediram mais. Assim nasceu o Viver Inteira: o planner que eu queria ter.</p>
+    <p class="it">Romantizando a rotina com Deus no centro. 🤍</p>
+    <p class="mont" style="font-family:Montserrat;font-size:15px"><a href="https://instagram.com/joynogueira.fit" style="color:var(--azul);font-weight:600">@joynogueira.fit</a></p></div>
+  </div>
+</section>
+
+<section class="azul" id="oferta">
+  <div class="w of">
+    <div class="k" id="ofK">Pré-venda · 07 a 17/12</div>
+    <div class="de" id="ofDe">de R$ 89,90</div>
+    <div class="preco" id="ofPreco"><small>R$</small> 79,90</div>
+    <div class="it" id="ofSub">acesso completo por 1 ano, pagamento único · ou parcelado no cartão</div>
+    <div class="box">
+      <div>Evangelho do dia, terço e novenas</div><div>Meu dia, água e humor</div><div>Treinos e evolução</div>
+      <div>Casa, cardápio e compras</div><div>Finanças e metas do ano</div><div>Desafios guiados</div><div>Novas novenas e desafios durante o ano</div>
+    </div>
+    <a class="btn js-cta" id="ofBtn" href="#">QUERO O VIVER INTEIRA</a>
+    <div class="grupo" id="ofGrupo">É do meu grupo? Use o seu cupom no pagamento e ganhe R$ 10 de desconto.</div>
+    <div class="nota">Pagamento seguro pela Hotmart. Acesso liberado logo após a compra.</div>
+  </div>
+</section>
+
+<section>
+  <div class="w gar">
+    <div class="selo"><b>7</b><span>DIAS DE</span><span>GARANTIA</span></div>
+    <div><h3>Risco zero para você</h3><p>Entre, use, monte a sua rotina. Se em até 7 dias você sentir que o Viver Inteira não é para você, é só pedir o reembolso pela Hotmart e você recebe 100% de volta.</p></div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="w faq">
+    <h2 style="text-align:center">Perguntas frequentes</h2>
+    <details><summary>Como eu recebo o acesso?</summary><p>Logo depois da compra você recebe um e-mail da Hotmart com o link do app. É só entrar, tocar em "Primeira vez" e criar a sua senha com o mesmo e-mail da compra.</p></details>
+    <details><summary>Preciso baixar na loja de aplicativos?</summary><p>Não. Você abre pelo navegador e instala na tela do celular com dois toques (tem o passo a passo dentro do app). Funciona no iPhone, no Android e no computador.</p></details>
+    <details><summary>Por quanto tempo tenho acesso?</summary><p>Por 1 ano a partir da compra, com todas as novidades que chegarem nesse período: novas novenas, desafios e melhorias.</p></details>
+    <details><summary>Posso parcelar?</summary><p>Sim, no cartão de crédito pela Hotmart. Também dá para pagar no Pix.</p></details>
+    <details><summary>Eu uso o app grátis dos 50 dias. Muda alguma coisa?</summary><p>Você pode continuar usando o dos 50 dias normalmente. No Viver Inteira, se usar o mesmo e-mail, entre em "Já tenho conta" com a mesma senha.</p></details>
+    <details><summary>Qual é a tradução do Evangelho?</summary><p>Usamos a Bíblia Livre, uma tradução em português de uso aberto, seguindo as leituras do dia.</p></details>
+    <details><summary>Meus dados ficam seguros?</summary><p>Sim. Cada uma só vê o próprio planner, e nada é compartilhado. Veja a <a href="privacidade.html">política de privacidade</a>.</p></details>
+  </div>
+</section>
+
+<footer>Viver Inteira · por Joy Nogueira · <a href="https://instagram.com/joynogueira.fit">@joynogueira.fit</a> · <a href="privacidade.html">Privacidade</a></footer>
+<div class="fix"><a class="btn js-cta" href="#oferta">QUERO O VIVER INTEIRA</a></div>
+
+<script>
+// ===== A Joice edita só aqui =====
+var LINK_PRE_VENDA = '';   // link de pagamento da oferta de pré-venda (R$ 79,90), da Hotmart
+var LINK_NORMAL    = '';   // link de pagamento do preço normal (R$ 89,90), da Hotmart
+var FOTO           = '';   // ex.: 'venda/joy.jpg' quando tiver a foto
+// =================================
+(function(){
+  var hoje = new Date(); var d = hoje.getFullYear()*10000 + (hoje.getMonth()+1)*100 + hoje.getDate();
+  var fase = d < 20261207 ? 'breve' : (d <= 20261217 ? 'pre' : 'normal');
+  var $ = function(id){ return document.getElementById(id); };
+  var link;
+  if (fase === 'normal') {
+    $('ofK').textContent = 'Acesso completo por 1 ano';
+    $('ofDe').style.display = 'none';
+    $('ofPreco').innerHTML = '<small>R$</small> 89,90';
+    link = LINK_NORMAL;
+  } else {
+    link = LINK_PRE_VENDA;
+  }
+  if (fase === 'breve' || !link) {
+    $('ofK').textContent = 'Pré-venda abre em 07/12';
+    $('ofBtn').textContent = 'QUERO SER AVISADA';
+    link = 'https://instagram.com/joynogueira.fit';
+  }
+  $('ofBtn').href = link;
+  if (fase !== 'breve' && link.indexOf('hotmart') >= 0) {
+    document.querySelectorAll('.js-cta').forEach(function(a){ if (a.id !== 'ofBtn') a.href = '#oferta'; });
+  }
+  if (FOTO) $('foto').innerHTML = '<img src="'+FOTO+'" alt="Joy Nogueira">';
+})();
+</script>
+</body>
+</html>
