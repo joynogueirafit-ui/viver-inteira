@@ -138,6 +138,7 @@
           return h + chk(d.f.evangLido, 'evang', 'evangLido', 'Li o Evangelho de hoje')
             + '<label class="hint" for="evRefl">✍️ O que Deus me falou hoje</label><textarea id="evRefl" data-f="evRefl" placeholder="Uma palavra, um versículo, um propósito…">'+esc(d.evRefl)+'</textarea></section>';
         })()
+      + novenaCard()
       + '<section class="card"><h2>Terço de hoje <em>Mistérios '+mist+'</em></h2><div class="terco">'+beads+'</div>'
       + '<p class="hint">'+(c>=55?'Terço completo! 🌹':(mi+1)+'º mistério · '+Math.max(0,pos-1)+' de 10 Ave-Marias')+(c?' · <button class="link" data-a="tercoZero">recomeçar</button>':'')+'</p></section>'
       + '<section class="card"><h2>Minha semana com Deus <em>'+st.semDeus.filter(function(x){return s.f[x.id];}).length+' de '+st.semDeus.length+'</em></h2>'
@@ -237,6 +238,49 @@
     var idx = ini ? diffDays(ini, T) : -1;
     return {s:s, ini:ini, idx:idx, ativo: ini && idx >= 0 && idx < x.dias, feitos: Object.keys(s.f||{}).length};
   }
+  // ---------- novenas ----------
+  function novenaInfo(n){
+    var y = T.getFullYear(), ini = parse(y+'-'+n.inicio);
+    if (diffDays(ini, T) > 8) ini = parse((y+1)+'-'+n.inicio);
+    var idx = diffDays(ini, T);
+    var k = n.id + ini.getFullYear(), s = (st.novenas || {})[k] || {};
+    return {ini:ini, idx:idx, ativa: idx >= 0 && idx <= 8, key:k, f: s.f || {}, festa: parse(ini.getFullYear()+'-'+n.festa)};
+  }
+  function ddmm(d){ return pad(d.getDate())+'/'+pad(d.getMonth()+1); }
+  function novenaCard(){
+    var ns = (window.NOVENAS || []).map(function(n){ return {n:n, i:novenaInfo(n)}; }).sort(function(a,b){ return a.i.ini - b.i.ini; });
+    if (!ns.length) return '';
+    var at = ns.filter(function(x){ return x.i.ativa; })[0], h = '<section class="card"><h2>🌹 Novena <em>'+(at ? 'dia '+(at.i.idx+1)+' de 9' : 'próxima')+'</em></h2>';
+    if (at) h += '<p style="margin:0;font-weight:700;color:var(--azul)">'+esc(at.n.nome)+'</p><p class="hint">'+esc(at.n.dias[at.i.idx])+'</p>'
+      + chk(at.i.f[at.i.idx], 'novenaDia', at.n.id+'|'+at.i.idx, 'Rezei a novena hoje') + '<button class="link" data-a="abrirNovena" data-id="'+at.n.id+'">Rezar agora ›</button>';
+    else { var nx = ns.filter(function(x){ return x.i.idx < 0; })[0]; h += '<p style="margin:0;font-weight:700;color:var(--azul)">'+esc(nx.n.nome)+'</p><p class="hint">Começa em '+ddmm(nx.i.ini)+'. No dia, ela aparece aqui.</p>'; }
+    return h + '<button class="link" data-a="go" data-v="novenas">Ver todas as novenas</button></section>';
+  }
+  R.novenas = function(){
+    if (view.novena) return R.novena();
+    var ns = (window.NOVENAS || []).map(function(n){ return {n:n, i:novenaInfo(n)}; }).sort(function(a,b){ return a.i.ini - b.i.ini; });
+    return '<button class="link" data-a="go" data-v="fe">‹ Vida de fé</button>' + head('Rezando com a Igreja', 'Novenas', '🌹')
+      + ns.map(function(x){
+        var pl = x.i.ativa ? 'Hoje · dia '+(x.i.idx+1)+' de 9' : ddmm(x.i.ini)+' a '+ddmm(addDays(x.i.ini, 8));
+        var feitos = Object.keys(x.i.f).length;
+        return '<button class="ch '+(x.n.cor||'c-natal')+'" data-a="abrirNovena" data-id="'+x.n.id+'"><span class="pl">'+pl+'</span><h3>'+esc(x.n.nome)+'</h3><p>Festa em '+ddmm(x.i.festa)+(feitos ? ' · '+feitos+' de 9 dias rezados' : '')+'</p></button>';
+      }).join('');
+  };
+  R.novena = function(){
+    var n = (window.NOVENAS || []).filter(function(x){ return x.id === view.novena; })[0], i = novenaInfo(n);
+    var dia = i.ativa ? i.idx : (view.novenaDia || 0);
+    var h = '<button class="link" data-a="fecharNovena">‹ Novenas</button><div class="ch '+(n.cor||'c-natal')+'"><span class="pl">'+ddmm(i.ini)+' a '+ddmm(addDays(i.ini,8))+'</span><h3>'+esc(n.nome)+'</h3><p>Festa em '+ddmm(i.festa)+'</p></div>';
+    var mapa = ''; for (var k=0;k<9;k++) mapa += '<button class="tag'+(i.f[k]?'':' soft')+'" data-a="novenaVer" data-v="'+k+'" style="min-width:40px'+(k===dia?';outline:2px solid var(--azul2)':'')+'">'+(i.f[k]?'✓':k+1)+'</button>';
+    h += '<section class="card"><h2>Dia '+(dia+1)+' de 9'+(i.ativa && dia === i.idx ? ' <em>hoje</em>' : '')+'</h2>'
+      + '<p style="margin:0;font-family:var(--read);font-size:18px;color:var(--azul)">'+esc(n.dias[dia])+'</p>'
+      + '<p class="lbl">1. Sinal da cruz e intenção</p><p class="hint">Em nome do Pai, do Filho e do Espírito Santo. Coloque diante de Deus o seu pedido.</p>'
+      + '<p class="lbl">2. Oração da novena</p><p class="evtxt">'+esc(n.oracao)+'</p>'
+      + '<p class="lbl">3. Orações finais</p><p class="hint">Reze 1 Pai-Nosso, 1 Ave-Maria e 1 Glória ao Pai.</p>'
+      + chk(i.f[dia], 'novenaDia', n.id+'|'+dia, 'Rezei o dia '+(dia+1)) + '</section>'
+      + '<section class="card"><h2>Os 9 dias</h2><div class="tags">'+mapa+'</div></section>';
+    return h;
+  };
+
   R.desafios = function(){
     if (view.desafio) return R.desafio();
     return head('Jornadas guiadas', 'Desafios', '✨')
@@ -331,23 +375,23 @@
     if (!st.onboard) html = view.ob === 1 ? R.boasvindas() : view.ob === 2 ? R.meudia() : R.instalar();
     else html = (R[t] || R.hoje)();
     if (demo) html = '<div class="demo">Versão de teste · as marcações ficam só neste aparelho</div>' + html;
-    var sy = window.scrollY, same = render.last === t + view.ob + view.casaTab + view.desafio;
+    var sy = window.scrollY, same = render.last === t + view.ob + view.casaTab + view.desafio + view.novena + view.novenaDia;
     $('main').innerHTML = pele(html);
     $('main').classList.toggle('grade', st.onboard && ['hoje','fe','corpo','casa','financas'].indexOf(t) >= 0);
     if (!render.tab) render.tab = $('tabbar').innerHTML; $('tabbar').innerHTML = pele(render.tab);
     $('tabbar').hidden = !st.onboard;
     document.querySelectorAll('#tabbar a').forEach(function(a){
       var v = a.getAttribute('href').slice(1);
-      if (v === t || (v === 'mais' && MAIS.indexOf(t) >= 0)) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+      if (v === t || (v === 'mais' && MAIS.indexOf(t) >= 0) || (v === 'fe' && t === 'novenas')) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
     });
     window.scrollTo(0, same ? sy : 0);
     var cur = document.querySelector('#tabbar a[aria-current]'), nav = document.querySelector('#tabbar nav');
     if (cur && !same) { var l = cur.offsetLeft, w = cur.offsetWidth; if (l < nav.scrollLeft || l + w > nav.scrollLeft + nav.clientWidth) nav.scrollTo({left: l - nav.clientWidth + w*2, behavior:'smooth'}); }
-    render.last = t + view.ob + view.casaTab + view.desafio;
+    render.last = t + view.ob + view.casaTab + view.desafio + view.novena + view.novenaDia;
   }
   function go(v){ if (location.hash !== '#'+v) location.hash = v; else { view.tela = v; render(); } }
   document.querySelector('#tabbar nav').addEventListener('scroll', function(){ this.classList.toggle('fim', this.scrollLeft + this.clientWidth >= this.scrollWidth - 4); });
-  window.addEventListener('hashchange', function(){ view.tela = location.hash.slice(1) || 'hoje'; if (view.tela !== 'desafios') view.desafio = null; render(); });
+  window.addEventListener('hashchange', function(){ view.tela = location.hash.slice(1) || 'hoje'; if (view.tela !== 'desafios') view.desafio = null; if (view.tela !== 'novenas') view.novena = null; render(); });
 
   // ---------- folha (modal) ----------
   function sheet(html, onSave){
@@ -388,6 +432,14 @@
     pagar: function(el){ mes().contas.forEach(function(c){ if (c.id === el.dataset.id) c.pago = !c.pago; }); },
     delConta: function(el){ var m = mes(); m.contas = m.contas.filter(function(c){ return c.id !== el.dataset.id; }); },
     evAbrir: function(){ view.evAberto = !view.evAberto; },
+    abrirNovena: function(el){ view.novena = el.dataset.id; view.novenaDia = 0; if (location.hash !== '#novenas') { location.hash = 'novenas'; } },
+    fecharNovena: function(){ view.novena = null; },
+    novenaVer: function(el){ view.novenaDia = +el.dataset.v; var n = (window.NOVENAS||[]).filter(function(x){ return x.id === view.novena; })[0]; if (novenaInfo(n).ativa) toast('Na novena de agora, siga o dia de hoje 🤍'); },
+    novenaDia: function(el){
+      var p = el.dataset.id.split('|'), n = (window.NOVENAS||[]).filter(function(x){ return x.id === p[0]; })[0], i = novenaInfo(n);
+      st.novenas = st.novenas || {}; var s = st.novenas[i.key] = st.novenas[i.key] || {f:{}};
+      if (s.f[p[1]]) delete s.f[p[1]]; else { s.f[p[1]] = true; toast(Object.keys(s.f).length === 9 ? 'Novena completa! 🌹' : 'Amém 🙏'); }
+    },
     abrirDesafio: function(el){ view.desafio = el.dataset.id; },
     voltarDesafios: function(){ view.desafio = null; },
     comecar: function(el){ st.desafios[el.dataset.id] = {inicio:TK, f:{}}; toast('Desafio começado! 🤍'); },
