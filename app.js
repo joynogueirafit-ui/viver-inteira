@@ -61,7 +61,8 @@
 
   // ---------- salvar ----------
   var cfg = window.VI_CONFIG || {};
-  var demo = /[?&]demo\b/.test(location.search) || !cfg.url || cfg.url.indexOf('COLE_AQUI') >= 0 || !window.supabase;
+  var demo = !cfg.url || cfg.url.indexOf('COLE_AQUI') >= 0;
+  if (!demo && !window.supabase) { document.body.innerHTML = '<p style="padding:24px;font-family:sans-serif">Não consegui conectar. Verifique a internet e abra de novo.</p>'; throw new Error('sem supabase'); }
   var sb = demo ? null : window.supabase.createClient(cfg.url, cfg.anonKey);
   function key(){ return 'vi:' + (user ? user.id : 'demo'); }
   function cache(){ try { localStorage.setItem(key(), JSON.stringify(st)); } catch(e){} }
