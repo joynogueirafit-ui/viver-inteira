@@ -556,11 +556,22 @@
 
   // ---------- login ----------
   function iniciar(){ view.tela = location.hash.slice(1) || 'hoje'; $('login').hidden = true; $('wrap').hidden = false; render(); }
-  function entrou(u){ user = u; load().then(iniciar); }
+  function entrou(u){
+    user = u;
+    sb.rpc('meu_acesso').then(function(r){
+      var a = r.data;
+      if (!a || a.status !== 'ativa' || (a.validade && a.validade < TK)) {
+        $('login').hidden = false; $('wrap').hidden = true;
+        $('loginMsg').textContent = !a ? 'Não encontrei uma compra com o e-mail '+u.email+'. Use o mesmo e-mail da compra na Hotmart.' : 'O seu acesso terminou. Renove para continuar 🤍';
+        sb.auth.signOut(); user = null; return;
+      }
+      load().then(iniciar);
+    });
+  }
   function traduz(e){
     var m = (e && e.message || '').toLowerCase();
     if (m.indexOf('invalid login') >= 0) return 'E-mail ou senha não conferem. Primeira vez? Toque em “Primeira vez”.';
-    if (m.indexOf('already registered') >= 0) return 'Esse e-mail já tem conta. Toque em “Já tenho conta”.';
+    if (m.indexOf('already registered') >= 0) return 'Esse e-mail já tem conta (pode ser a do app dos 50 dias). Toque em “Já tenho conta” e entre com a mesma senha.';
     if (m.indexOf('password') >= 0) return 'A senha precisa ter pelo menos 6 caracteres.';
     if (m.indexOf('compradora') >= 0 || m.indexOf('database error') >= 0) return 'Não encontrei uma compra com esse e-mail. Use o mesmo e-mail da compra na Hotmart.';
     return 'Não deu certo agora. Confira a internet e tente de novo.';
@@ -580,7 +591,7 @@
     $('fLogin').addEventListener('submit', function(ev){
       ev.preventDefault(); var email = $('email').value.trim(), senha = $('senha').value;
       $('loginMsg').textContent = modo === 'criar' ? 'Criando a sua conta…' : 'Entrando…';
-      var p = modo === 'criar' ? sb.auth.signUp({email:email, password:senha}) : sb.auth.signInWithPassword({email:email, password:senha});
+      var p = modo === 'criar' ? sb.auth.signUp({email:email, password:senha, options:{data:{app:'viver'}}}) : sb.auth.signInWithPassword({email:email, password:senha});
       p.then(function(r){ if (r.error) $('loginMsg').textContent = traduz(r.error); else if (r.data.session) entrou(r.data.user); else $('loginMsg').textContent = 'Conta criada! Confirme pelo seu e-mail e depois entre.'; });
     });
     sb.auth.getSession().then(function(r){ if (r.data && r.data.session) entrou(r.data.session.user); else { $('login').hidden = false; } });
